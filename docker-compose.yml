@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=us-west-2
+      - DYNAMODB_ENDPOINT=http://0.0.0.0:8000
+    depends_on:
+      - dynamodb-local
+
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - dynamodb-data:/home/dynamodblocal
+    command: -jar DynamoDBLocal.jar -sharedDb
+
+volumes:
+  dynamodb-data:

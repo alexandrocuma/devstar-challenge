@@ -2,7 +2,7 @@ import boto3
 
 class Database: 
     def __init__(self):
-        db = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+        db = boto3.resource('dynamodb', endpoint_url="http://dynamodb-local:8000")
         self.db = db
         self.table = db.Table("Tasks")
      
